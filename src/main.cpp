@@ -1,14 +1,14 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
-#include <ArduinoJson.h>
+#include <ArduinoJson.h
 
-class conexionWeb{
+class conexionEsp{
   private:
 
   public:
-    conexionWeb(const char *_SSID, const char* _PASSWORD ){
-      WiFi.begin(_SSID, _PASSWORD);
+    conexionEsp(const char *_nombre, const char *_SSID, const char* _PASSWORD ){
+      WiFi.begin(_nombre, _SSID, _PASSWORD);
       while(WiFi.status()!= WL_CONNECTED){
           delay(500);
           Serial.print("...");
@@ -49,19 +49,21 @@ public:
     strftime(timeStringBuff, sizeof(timeStringBuff), "%Y-%m-%dT%H:%M:%SZ", &timeinfo);
   }
 };
-conexionWeb *webInterface;
+conexionEsp *webInterface;
 DateTime *reloj;
 StaticJsonDocument<512> horaActual;
 
 
-const char *ssid="Ubee16F8-2.4G";
-const char *passwrd="5F99F616F8";
+const char *ssid="AdrianaBL";
+const char *passwrd="1234hola";
 
 
 void setup() {
   Serial.begin(115200);
-  webInterface= new conexionWeb(ssid,passwrd);
+  webInterface= new conexionEsp(ssid,passwrd);
   reloj=new DateTime();
+  pinMode(13, OUTPUT);
+  
   
 }
 int suma=0;
@@ -74,5 +76,10 @@ void loop() {
   serializeJson(horaActual,Serial);
   Serial.println("");
   delay(1000);
+  
+  digitalWrite(13, HIGH);   
+  delay(1000);              
+  digitalWrite(13, LOW);    
+  delay(1000); 
 }
 
